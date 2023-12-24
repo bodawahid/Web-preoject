@@ -50,6 +50,8 @@ if (isset($_POST['submit'])) {
                         ":user_password" => password_hash($password, PASSWORD_DEFAULT)
                     ]
                 );
+                $last_id = $conn->lastInsertId();   
+                $_SESSION['user_id'] = $last_id;    
                 $_SESSION['username'] = $username;  
                 header('location:login.php');
                 exit();
@@ -58,78 +60,28 @@ if (isset($_POST['submit'])) {
     }
 }
 ?>
-
-<head>
-    <style>
-        .login {
-            height: 100vh;
-            width: 100%;
-            /* top: 50%; */
-            position: relative;
-            background-color: aliceblue;
-        }
-
-        .login-input {
-
-            display: block;
-            margin-top: 15px;
-            width: 50%;
-            height: 50px;
-            left: 25%;
-        }
-
-        .bord:focus {
-            /* border: 2px red solid; */
-            /* background-color: #C0C0C0; */
-            border-radius: 3px;
-            color: gray;
-        }
-
-        h1 {
-            position: absolute;
-            top: 20%;
-            left: 46%;
-            text-align: center;
-        }
-
-        .form-f {
-            position: absolute;
-            width: 50%;
-            top: 32%;
-            left: 38%;
-
-        }
-
-        .send {
-            background-color: gray;
-            border: none;
-            border-radius: 3px;
-            /* transition: background-color  0.5ms; */
-        }
-
-        .send:hover {
-            background-color: #C0C0C0;
-            color: white;
-            cursor: pointer;
-        }
-        /* define error class here ... */ 
-    </style>
-</head>
-
 <body>
     <div class="login container">
-        <h1 style="text-align: center; ">Register</h1>
+        <h1 style="text-align: center;" class="h1-login">Register</h1>
         <form action="registeration.php" method="post" class="form-f">
             <!-- <label for="username">UserName</label> -->
-            <input class="login-input bord" name="username" type="text" placeholder="Enter a username">
-            <div class="error"> <?php echo $err_username; ?></div>
-            <input class="login-input bord" name="email" type="email" placeholder="Enter a email">
-            <div class="error"> <?php echo $err_email; ?></div>
-            <input class="login-input bord" name="password" type="password" placeholder="Enter a password">
-            <input class="login-input bord" name="confirmPassword" type="password" placeholder="Enter Confirmation password">
-            <div class="error"> <?php echo $err_pass; ?></div>
-            <input class="login-input send" name="submit" type="submit" value="LOGIN">
-            <div class="error"> <?php echo $error; ?></div>
+            <input class="login-input bord" name="username" type="text" placeholder="Username">
+            <?php if(!empty($err_username)): ?>    
+            <div class="alert alert-danger"> <?php echo $err_username; ?></div>
+            <?php endif ; ?>
+            <input class="login-input bord" name="email" type="email" placeholder="Email">
+            <?php if(!empty($err_email)): ?>    
+            <div class="alert alert-danger"> <?php echo $err_email; ?></div>
+            <?php endif  ; ?>
+            <input class="login-input bord" name="password" type="password" placeholder="Password">
+            <?php if(!empty($err_pass)): ?>
+                <div class="alert alert-danger"> <?php echo $err_email; ?></div>
+            <?php endif ; ?>
+            <input class="login-input bord" name="confirmPassword" type="password" placeholder="Confirmation Password">
+            <input class="login-input send" name="submit" type="submit" value="Register">
+            <?php if(!empty($error)): ?>
+            <div class="alert alert-danger"> <?php echo $error; ?></div>
+            <?php endif ; ?>
         </form>
     </div>
 </body>

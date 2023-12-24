@@ -1,5 +1,7 @@
 body {
     margin: 0;
+    /* width: fit-content; */
+    height: fit-content;
     font-family: "Arial", sans-serif;
 }
 
@@ -12,7 +14,7 @@ header {
     position: fixed;
     top: 0%;
     width: 100%;
-    background-color: #343a40;
+    background-color: #001d3b;
     color: #fff;
     padding: 10px;
     z-index: 100;
@@ -28,8 +30,17 @@ header {
     padding: 20px;
 }
 
+.card-content {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    justify-content: center;
+    padding: 100px;
+    /* width: 100%; */
+}
+
 footer {
-    background-color: #333;
+    background-color: #001d3b;
     color: #fff;
     padding: 10px;
     text-align: center;
@@ -49,13 +60,15 @@ body {
 /* The sidebar menu  */
 
 .sidenav {
+    background-color: #036cb3;
+    padding: 10px;
+    text-align: center;
     height: 100%;
     width: 160px;
     position: fixed;
     /* z-index: 1; */
     top: 0;
     left: 0;
-    background-color: #585f66;
     z-index: 5;
     overflow-x: hidden;
     padding-top: 20px;
@@ -66,18 +79,22 @@ body {
 /* /The navigation menu links / */
 
 .sidenav a {
+    color: #ffffff;
+    padding: 10px 15px;
+    margin: 0 5px;
+    border-radius: 5px;
     padding: 6px 8px 6px 16px;
     text-decoration: none;
     font-size: 20px;
-    color: #818181;
     display: block;
+    margin-right: 10px;
 }
 
 
 /* When you mouse over the navigation links, change their color / */
 
 .sidenav a:hover {
-    color: #d6cece;
+    background-color: #2980b9;
 }
 
 Style page content .main {
@@ -120,6 +137,9 @@ Style page content .main {
     .sidenav {
         width: 10%;
     }
+    /* .card{
+        width: 10%;
+    } */
 }
 
 @media (min-width: 992px) {
@@ -136,3 +156,191 @@ Style page content .main {
 
 
 /* ---------------- */
+
+body {
+    /* width: fit-content; */
+    height: fit-content;
+    background: linear-gradient(135deg, #3498db, #9b59b6);
+    color: black
+}
+
+.login {
+    height: 100vh;
+}
+
+label {
+    margin-top: 2%;
+    font-size: larger;
+    color: black;
+    font-weight: 700;
+}
+
+.login-input,
+textarea {
+    width: 100%;
+    padding: 10px;
+    margin-top: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+}
+
+.bord:focus {
+    /* border: 2px red solid; */
+    /* background-color: #C0C0C0; */
+    border-radius: 3px;
+    color: gray;
+}
+
+h1 {
+    /* position: absolute; */
+    /* top: 20%;
+    left: 48%; */
+    text-align: center;
+}
+
+.send {
+    background-color: #3498db;
+    color: #ffffff;
+    border: none;
+    border-radius: 3px;
+    height: 35px;
+    /* transition: background-color  0.5ms; */
+}
+
+.send:hover {
+    background-color: #2980b9;
+    color: white;
+    cursor: pointer;
+}
+
+.card {
+    padding: 40px;
+    background-color: rgba(255, 255, 255, 0.9);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    width: 60%;
+    border: 1px solid black;
+    border-radius: 5px;
+    margin-left: 34vw;
+    margin-top: 18vh;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    position: relative;
+    margin: auto;
+    margin-top: 150px;
+    margin-bottom: 100px;
+}
+
+.mg {
+    margin: 100px 0px 30px 200px;
+}
+
+select {
+    display: block;
+    margin-bottom: 15px;
+    width: 100%;
+    padding: 10px;
+    margin-top: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+    background-color: #fff;
+    /* Adjust as needed */
+    color: #333;
+    /* Adjust as needed */
+}
+
+
+/* ********************************************** */
+
+.btn:active,
+.btn {
+    display: inline-block;
+    padding: 8px 12px;
+    color: gainsboro;
+    background-color: #002e53;
+    text-decoration: none;
+    border-radius: 3px;
+    /* margin-top: 10px; */
+    margin: auto;
+    /* float: right; */
+}
+
+.btn:hover {
+    opacity: 80%;
+    transition: .3s;
+}
+
+
+/* alert  */
+
+.alert {
+    padding: 15px;
+    margin-top: 5px;
+    border: 1px solid transparent;
+    border-radius: 4px;
+}
+
+.alert-danger {
+    background-color: #f2dede;
+    border-color: #ebccd1;
+    color: #a94442;
+}
+
+table {
+    width: 80%;
+    margin: 0 auto;
+    /* Center the table */
+    border-collapse: collapse;
+    margin-top: 20px;
+    position: relative;
+    left: 3%;
+}
+
+.table-courses {
+    position: relative;
+    top: 2%;
+    /* left: 13.2%; */
+}
+
+th,
+td {
+    padding: 15px;
+    border: 1px solid #3498db;
+    text-align: center;
+    background-color: #2980b9;
+    color: #ffffff;
+    word-wrap: break-word;
+    /* Add word-wrap property here */
+    overflow-wrap: break-word;
+    /* Add overflow-wrap property here */
+}
+
+tbody tr:nth-child(even) {
+    background-color: #3498db;
+    color: #ffffff;
+}
+
+tbody tr:nth-child(odd) {
+    background-color: #2980b9;
+    color: #ffffff;
+}
+
+th {
+    background-color: #3498db;
+}
+
+.courseImg {
+    max-width: 100%;
+    max-height: 100%;
+}
+
+
+/* --------------------------------------- */
+
+.heading1 {
+    text-align: center;
+}
+
+.form-f {
+    width: 100%;
+}

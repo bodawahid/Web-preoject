@@ -1,76 +1,197 @@
-<?php include_once("complementary/header.php") ; ?>
+<?php include("complementary/header.php");
+$id = $_GET["id"];
+// selecting data of one item in the courses list
+$selectedData = $conn->query("SELECT * FROM courses join admins on courses.owner_id = admins.id WHERE courses.id = $id");
+$selectedData->execute();
+$itemData = $selectedData->fetch(PDO::FETCH_OBJ);
+if ($selectedData->rowCount() <= 0) {
+    header("location:homepage.php");
+}
+// selecting related topics ... 
+$data = $itemData->category;
+$selectRelatedData = $conn->query("select * from courses where category = '$data' ");
+$selectRelatedData->execute();
+$relatedData = $selectRelatedData->fetchAll(PDO::FETCH_OBJ);
+// selecting course requirements and learning outcomes .... 
+$selectedRequirements = $conn->query("select  courses.id as id , requirements.course_requirements as requirements , requirements.course_outcomes as outcome from courses join requirements on courses.id = requirements.course_id where id = '$id' ");
+$selectedRequirements->execute();
+$selectedReqData = $selectedRequirements->fetch(PDO::FETCH_ASSOC);
+// what to learn section from string to array to be can be accessed
+$outcomesArray = explode('.', $selectedReqData['outcome']);
+// requirements section from string to array to can be accessed ... 
+$reqArray = explode('.', $selectedReqData['requirements']);
+// ----------------------------------
+// checking if the person has purchased the course or not .... 
+if (isset($_SESSION['user_id'])) {
+    $user_id = $_SESSION['user_id'];
+    $check = $conn->query("select * from courses join booking on courses.id = booking.course_id JOIN users on booking.user_id = users.id WHERE courses.id = '$id'  and users.id = '$user_id' ;");
+    $check->execute();
+}
+?>
 <!DOCTYPE html>
-<html lang="en">
+<html>
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Course Page</title>
-    <style>
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f4f4f4;
-            color: #333;
-        }
+    <title> Benha university | Online E-learning platform</title>
+    <meta charset="utf-8">
+    <meta name="keywords" content="E-learning">
+    <meta name="description" content="E-learning platform">
 
-        header {
-            background-color: #333;
-            color: #fff;
-            text-align: center;
-            padding: 1em;
-        }
+    <!-- include library -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Ephesis&display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Josefin+Sans&display=swap">
 
-        section {
-            max-width: 800px;
-            margin: 20px auto;
-            padding: 20px;
-            background-color: #fff;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            border-radius: 10px;
-        }
+    <link rel="stylesheet" href="css/font-awesome.min.css">
+    <!-- link to css  -->
+    <link rel="stylesheet" href="page.css">
 
-        h1, h2 {
-            color: #333;
-        }
-
-        p {
-            line-height: 1.6;
-            color: #666;
-        }
-
-        .requirements, .payment {
-            margin-top: 30px;
-        }
-
-        footer {
-            text-align: center;
-            padding: 1em;
-            background-color: #333;
-            color: #fff;
-        }
-    </style>
 </head>
+
 <body>
 
-    <header>
-        <h1>Course Title</h1>
-    </header>
+    <div class="pd-y">
 
-    <section>
-        <h2>Description</h2>
-        <p>This is a brief description of the course content. Provide details about what participants will learn and any other relevant information.</p>
+        <div class="container">
+            <div class="course-item">
+                <div class="section-header">
+                    <h2 class="section-title"> <?php echo $itemData->name_of_course; ?> </h2>
+                    <span class="section-line"></span>
+                    <p style="text-transform: capitalize;">created by: <?php echo $itemData->username; ?></p>
+                </div>
+                <p style="text-transform: capitalize;">
+                    <!-- <?php echo $itemData->details; ?>. -->
+                </p>
+                <i class="fa fa-bell hover-opacity "></i>
+                <i class="fa fa-globe hover-opacity "></i> <span style="font-size: 10px; color:#999;text-transform: capitalize;"> <?php echo $itemData->language; ?></span>
+                <!-- <div class="rating">
+                    <input type="radio" id="star1" name="rating" value="1">
+                    <label for="star1"><i class="fa fa-star"></i></label>
+                    <input type="radio" id="star2" name="rating" value="2">
+                    <label for="star2"><i class="fa fa-star"></i></label>
+                    <input type="radio" id="star3" name="rating" value="3">
+                    <label for="star3"><i class="fa fa-star"></i></label>
+                    <input type="radio" id="star4" name="rating" value="4">
+                    <label for="star4"><i class="fa fa-star"></i></label>
+                    <input type="radio" id="star5" name="rating" value="5">
+                    <label for="star5"><i class="fa fa-star"></i></label>
+                </div> -->
+                <div class="course-price">
+                    <span class="original-price"><?php echo $itemData->price + 50; ?></span>
+                    <span class="discounted-price"> <?php echo $itemData->price; ?></span>
+                </div>
+                <?php if (isset($_SESSION['username']) and $check->rowCount() > 0) :  ?>
+                    <a href="video.php?id=<?php echo $id; ?>&number=1" style="text-decoration: none;color: #999;"><button class="btn hover-opacity ">Go To Course</button></a>
+                <?php elseif (isset($_SESSION['username'])) : ?>
+                    <a href="pay.php?id=<?php $_SESSION['pay'] = $id;
+                                        echo $_SESSION['pay']; ?>" style="text-decoration: none;color: #999;"><button class="btn hover-opacity ">Enroll Now</button></a>
+                <?php else : ?>
+                    <a href="login.php" style="text-decoration: none;color: #999;"><button class="btn hover-opacity ">Login To Enroll</button></a>
+                <?php endif; ?>
 
-        <div class="requirements">
-            <h2>Requirements</h2>
-            <p>List the prerequisites or any materials/steps participants need before taking the course.</p>
+            </div>
+            <div class="course-item">
+                <div class="course-item-img">
+                    <img src="images/<?php echo $itemData->image; ?>" alt="course-pic">
+                </div>
+            </div>
+            <div class="clear"></div>
+
         </div>
 
-        <div class="payment">
-            <h2>Payment</h2>
-            <p>Include information about the payment process, fees, and any payment methods accepted.</p>
+    </div>
+    <div class="container">
+        <div class="learn-section">
+            <h2 class="hover-opacity">Description</h2>
+            <hr>
+            <ul>
+                <li>- <?php echo $itemData->details;  ?></li>
+            </ul>
         </div>
-    </section>
+    </div>
+    <div class="container">
+        <div class="learn-section">
+            <h2 class="hover-opacity">What Will You Learn?</h2>
+            <hr>
+            <ul>
+                <?php foreach ($outcomesArray as $outcome) : ?>
+                    <?php if ($outcome != '') : ?>
+                        <li><i class="fa fa-check hover-opacity"></i><?php echo $outcome; ?></li>
+                    <?php endif;  ?>
+                <?php endforeach;  ?>
+            </ul>
+        </div>
+    </div>
+    <div class="container">
+        <div class="learn-section">
+            <h2 class="hover-opacity">Requirements</h2>
+            <hr>
+            <ul>
+                <?php foreach ($reqArray as $element) : ?>
+                    <li><?php echo $element; ?></li>
+                <?php endforeach;  ?>
+            </ul>
+        </div>
+    </div>
+
+    <div class="pd-y">
+        <div class="enroll-section">
+            <h2>Try Free Courses or Enroll in Paid Courses</h2>
+            <p>Explore thousands of courses available on Coursera.<br> Start learning for free, or enroll in a paid course to access graded assignments, certificates, and more.</p>
+            <div class="container">
+                <div class="item-courses">
+                    <h3>Free courses</h3>
+                    <ul>
+                        <li><i class="fa fa-check"></i> Online video content</li>
+                        <li><i class="fa fa-times"></i> Certificate of completion</li>
+                        <li><i class="fa fa-times"></i> Instructor Q&A</li>
+                        <li><i class="fa fa-times"></i> Instructor direct message</li>
+                    </ul>
+                </div>
+                <div class="item-courses">
+                    <h3>Paid courses</h3>
+                    <ul>
+                        <li><i class="fa fa-check"></i> Online video content</li>
+                        <li><i class="fa fa-check"></i> Certificate of completion</li>
+                        <li><i class="fa fa-check"></i> Instructor Q&A</li>
+                        <li><i class="fa fa-check"></i> Instructor direct message</li>
+                    </ul>
+                </div>
+                <div class="clear"></div>
+            </div>
+
+            <div class="container">
+                <button class="btn hover-opacity">Try Free Courses</button>
+                <button class="btn hover-opacity">Enroll in Paid Courses</button>
+            </div>
+        </div>
+    </div>
+
+    <?php if($selectRelatedData->rowCount() > 1) : ?>
+        <div class="about pd-y">
+            <div class="section-header">
+                <h2 class="section-title">related topics</h2>
+                <span class="section-line"></span>
+            </div> <!--close section-header div-->
+            <div class="container">
+                <div class="about-content">
+                    <?php foreach ($relatedData as $data) : ?>
+                        <?php if ($data->id == $id) continue;  ?>
+                        <div class="about-item ltr-effect">
+                            <img src="images/<?php echo $data->image; ?>" class="about-img-item" alt="<?php echo $data->name_of_course; ?>">
+                            <h3 class="about-item-title mg-d"><?php echo $data->name_of_course; ?> </h3>
+                            <p class="about-item-description mg-d"><?php echo $data->price; ?>$</p>
+                            <a href="#" class="about-item-link">Purchase Course</a>
+                        </div>
+                        <div class="clear"></div>
+                    <?php endforeach; ?>
+                </div>
+            </div>
+        </div>
+    <?php endif; ?>
+
+
+
+    <?php include("complementary/footer.php"); ?>
 </body>
+
 </html>
-<?php include_once("complementary/footer.php") ; ?>

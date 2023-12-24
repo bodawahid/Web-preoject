@@ -1,5 +1,5 @@
 {
-    window.addEventListener("scroll", function () {
+    window.addEventListener("scroll", function() {
         var header = document.querySelector("nav.header");
         header.classList.toggle("sticky", window.scrollY > 75);
 
@@ -16,4 +16,17 @@
 
         lastScrollY = window.scrollY;
     });
+    console.log("This works");
+    let scrollTopButton = document.getElementById("scrollTopButton");
+
+    scrollTopButton.addEventListener("click", () => {
+        // Scroll smoothly to the top of the page
+        window.scrollTo({
+            top: 0,
+            behavior: "smooth"
+        });
+    });
+
+
+
 }

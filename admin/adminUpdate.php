@@ -1,4 +1,11 @@
-<?php include_once("adminComp/header.php"); ?>
+<?php include_once("adminComp/header.php");
+if(!isset($_SESSION['adminUserName'])) {
+    header('location:adminLogin.php');
+}
+if($_SESSION['adminRole'] == 1) {
+    header('location:adminHome.php');
+}
+?>
 <?php
 $error = "";
 $err_username = "";
@@ -78,73 +85,6 @@ if (isset($_POST['submit'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="admin.css">
     <title>Admin Page</title>
-    <style>
-        .card {
-            padding: 30px;
-            width: 40%;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            margin-left: 34vw;
-            margin-top: 18vh;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        }
-
-        .login {
-            height: 90vh;
-            width: 100%;
-            /* top: 50%; */
-            /* position: relative; */
-        }
-
-        .login-input {
-            text-align: center;
-            display: block;
-            margin-top: 15px;
-            border: 1px grey solid;
-            border-radius: 2px;
-            width: 100%;
-            height: 20%;
-            margin-bottom: 10px;
-            /* margin-left: 20px ; */
-        }
-
-        .bord:focus {
-            /* border: 2px red solid; */
-            /* background-color: #C0C0C0; */
-            border-radius: 2px;
-            color: gray;
-            background-color: antiquewhite;
-        }
-
-        .heading1 {
-            color: turquoise;
-            margin-top: 3%;
-            text-align: center;
-        }
-
-        .form-f {
-            width: 90%;
-        }
-
-        .send {
-            background-color: gray;
-            /* border: none; */
-            border-radius: 3px;
-            width: 100%;
-            margin-top: 3%;
-            /* margin-left: 2px; */
-            transition: 0.5s;
-        }
-
-        .send:hover {
-            background-color: #C0C0C0;
-            color: white;
-            cursor: pointer;
-        }
-
-
-        /* define error class here ... */
-    </style>
 </head>
 
 <body>

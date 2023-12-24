@@ -26,7 +26,12 @@ clear after float
 
 /*                              common                      */
 
+.box-shadow {
+    box-shadow: 1px 1px 10px #999;
+}
+
 body {
+    height: fit-content;
     --header-height: 70px;
 }
 
@@ -37,11 +42,24 @@ body {
     /* CS3: padding will not affect the width size*/
 }
 
-.container {
+.container,
+.container-cat {
+    /* margin-top: 20px; */
     position: relative;
+    /* or inline-flex */
+    top: 10%;
     width: 70%;
     margin: auto;
     /* will be in the middle of the webpage*/
+}
+
+.container-cat {
+    margin-top: 7%;
+    margin-bottom: 7%;
+    display: flex;
+    flex-wrap: wrap;
+    width: 60%;
+    margin-left: 25%;
 }
 
 .mg {
@@ -162,22 +180,30 @@ a {
 
 /*                       Header                         */
 
+.header-other,
 .header {
     position: fixed;
     width: 100%;
     height: var(--header-height);
     /*the fixed position transform the element from block to inline-block*/
     z-index: 10;
+    top: 0%;
     /*to be on top of the home content */
     transition: 0.5s;
 }
 
-.header--hidden {
+.header-other {
+    background-color: #0c1529;
+}
+
+.header--hidden,
+.header-other--hidden {
     transform: translateY(calc(-1 * var(--header-height)));
     box-shadow: none;
 }
 
-.header.sticky {
+.header.sticky,
+.header-other.sticky {
     background-color: #0c1529;
     position: fixed;
     top: 0%;
@@ -185,20 +211,24 @@ a {
     transition: 0.3s;
 }
 
-.header.sticky ul li a {
+.header.sticky ul li a,
+.header-other.sticky ul li a {
     color: rgb(255, 255, 255);
 }
 
-.header.sticky ul li ul li {
+.header.sticky ul li ul li,
+.header-other.sticky ul li ul li {
     background-color: black;
     transition: 0.3s;
 }
 
-.header.sticky ul li ul li a {
+.header.sticky ul li ul li a,
+.header-other.sticky ul li ul li a {
     color: aliceblue;
 }
 
-.header .logo {
+.header .logo,
+.header-other .logo {
     font-family: Ephesis, sans-serif;
     letter-spacing: 4px;
     font-size: 30px;
@@ -209,18 +239,21 @@ a {
 }
 
 .header .logo a:visited,
-.header .logo a:active {
+.header-other .logo a:visited,
+.header-other .logo a:active {
     color: white;
 }
 
-.header .nav {
+.header .nav,
+.header-other .nav {
     width: 60%;
     /* next to each other*/
     float: left;
     text-align: right;
 }
 
-.header .nav>li {
+.header .nav>li,
+.header-other .nav>li {
     /*only the direct childs of nav class and direct child of li*/
     list-style: none;
     /* no bullets*/
@@ -228,7 +261,8 @@ a {
     /* padding :6px;  not very effective here because the link will not be clickable in any area of the padding*/
 }
 
-.header .nav>li>a {
+.header .nav>li>a,
+.header-other .nav>li>a {
     font-size: 20px;
     color: white;
     padding: 25px 16px;
@@ -237,7 +271,9 @@ a {
 }
 
 .header .nav>li>a:after,
-.header .nav>li>a.active:after {
+.header .nav>li>a.active:after,
+.header-other .nav>li>a:after,
+.header-other .nav>li>a.active:after {
     /*grouping*/
     content: "";
     display: block;
@@ -249,17 +285,20 @@ a {
     margin-top: 2px;
 }
 
-.header .nav>li>a:after {
+.header .nav>li>a:after,
+.header-other .nav>li>a:after {
     width: 0;
     /*width won't be visiable until hover*/
 }
 
-.header .nav>li>a.active:after {
+.header .nav>li>a.active:after,
+.header-other .nav>li>a.active:after {
     width: 100%;
     /*by default underline that element */
 }
 
-.header .nav>li>a:hover:after {
+.header .nav>li>a:hover:after,
+.header-other .nav>li>a:hover:after {
     width: 100%;
 }
 
@@ -353,11 +392,13 @@ a {
     text-align: center;
 }
 
-.home .btn:visited {
+.home .btn:visited,
+.btn {
     color: rgb(0, 0, 0);
 }
 
-.home .btn {
+.home .btn,
+.btn {
     display: inline-block;
     min-width: 160px;
     padding: 15px 0;
@@ -382,14 +423,73 @@ a {
 
 /*       about       */
 
+.about-content {
+    /* edited */
+    width: 100%;
+    display: flex;
+    overflow-x: scroll;
+    white-space: nowrap;
+    text-align: center;
+}
+
+.about-content::-webkit-scrollbar {
+    display: none;
+}
+
+.about-wrap {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* margin:10% auto;
+     */
+    gap: 1rem;
+}
+
+.about-wrap i {
+    color: #5573af;
+    width: 30px;
+    height: 30px;
+    padding: 7px;
+    margin-right: 10px;
+}
+
 .about-item {
-    width: 30%;
+    width: 200px;
     float: left;
     text-align: center;
     border: 2px solid #e8e8e8;
-    padding: 50px 20px;
+    height: 300px;
     border-radius: 10px;
     background-color: rgba(245, 245, 245, 0.2);
+    /* flex:none; */
+    margin: 10px;
+    white-space: normal;
+}
+
+.about-content a:link,
+.about-content a:visited,
+.about-content a:active .topics-items li a,
+.topics-items li a:visited,
+.topics-items li a:active {
+    color: #5573af;
+}
+
+.topics-items li a:hover {
+    color: white;
+}
+
+.backward,
+.forward {
+    width: 50px;
+    height: 50px;
+    /* Adjust height for a larger clickable area */
+    cursor: pointer;
+    margin: 0 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    /* Adjust the font size for the chevron icons */
 }
 
 .about-item.marg {
@@ -397,8 +497,8 @@ a {
 }
 
 .about-img-item {
-    height: 200px;
-    width: 250px;
+    height: 50vh;
+    width: 100%;
 }
 
 .about-item-title {
@@ -407,6 +507,7 @@ a {
     font-family: sans-serif;
     margin-top: 5px;
     color: #0c1529;
+    overflow: hidden;
 }
 
 .about-item:hover .about-item-title {
@@ -416,6 +517,7 @@ a {
 .about-item-description {
     line-height: 1.6;
     color: #0c1529;
+    overflow: hidden;
 }
 
 .mg-d {
@@ -433,7 +535,7 @@ a {
 
 .numbers {
     position: relative;
-    background-image: url(images/background2.jpg);
+    background-image: url(images/imagesss.jpg);
     background-size: cover;
     background-attachment: fixed;
     height: 350px;
@@ -448,11 +550,24 @@ a {
 .number-item {
     width: 25%;
     float: left;
-    margin-left: 2%;
+    margin-left: 3%;
     text-align: center;
 }
 
+@media screen and (max-width: 600px) {
+    .number-item {
+        /* width: 200px; */
+        margin-top: -60px;
+        /* margin-right: 50px; */
+        flex-wrap: wrap;
+        margin-left: 50%;
+        /* Adjusted width for smaller screens */
+        /* Other styles specific to smaller screens */
+    }
+}
+
 .number-item .icon {
+    overflow: hidden;
     color: #6195ff;
     margin-bottom: 15px;
 }
@@ -667,13 +782,19 @@ a {
     display: inline-block;
 }
 
-.footer-links li a {
-    display: block;
+.footer-links li a,
+.button1 {
+    display: inline-block;
     width: 50px;
     height: 50px;
     background-color: #5573af;
     color: white;
     border-radius: 50%;
+}
+
+.button1 {
+    margin-left: 90%;
+    /* justify-content: right; */
 }
 
 .footer-links li a i {
@@ -692,4 +813,360 @@ a {
     font-family: Georgia, "Times New Roman", Times, serif;
     text-transform: uppercase;
     font-size: 15px;
+}
+
+
+/*       dis page */
+
+.couse-content {}
+
+.course-item {
+    width: 50%;
+    float: left;
+    /* text-align: center; */
+    padding: 50px 20px;
+    font-size: 20px;
+    font-family: Georgia, "Times New Roman", Times, serif;
+    background-color: rgba(245, 245, 245, 0.2);
+}
+
+.course-item .btn {
+    width: 100%;
+    padding: 15px 0;
+    border-radius: 5px;
+    border: 0;
+    cursor: pointer;
+    font-size: 18px;
+    text-transform: capitalize;
+    margin: 10px;
+    background-color: #5573af;
+    color: white;
+    margin-top: 35px;
+    display: inline-block;
+}
+
+.course-item-img img {
+    width: 100%;
+    /* margin-top:120px; */
+    margin-left: 20px;
+    margin-top: 30px;
+}
+
+.course-item .section-header {
+    text-align: left;
+}
+
+.course-item .section-header .section-line {
+    margin: 0;
+    margin-bottom: 50px;
+}
+
+.course-item>i {
+    border: 1px solid #5573af;
+    color: #5573af;
+    width: 30px;
+    height: 30px;
+    padding: 4px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+.course-item p {
+    margin: 20px 10px;
+}
+
+.rating {
+    display: inline-flex;
+    flex-direction: row-reverse;
+    margin-left: 200px;
+}
+
+.rating input {
+    display: none;
+}
+
+.rating label {
+    cursor: pointer;
+    color: #ccc;
+    margin: 5px;
+    font-size: 20px;
+}
+
+.rating input:checked~label {
+    transition: 0.6s;
+    color: #ffc107;
+    /* Change color for filled stars */
+}
+
+
+/* Styles for Course Price */
+
+.course-price {
+    display: inline-block;
+    background-color: #f5f5f5;
+    padding: 10px;
+    border-radius: 5px;
+    margin: 20px 0 0 10px;
+    width: 100%;
+    text-align: center;
+}
+
+.original-price {
+    text-decoration: line-through;
+    margin-right: 5px;
+    font-size: 18px;
+}
+
+.discounted-price {
+    color: #ba110b;
+    font-weight: bold;
+    font-size: 25px;
+}
+
+
+/* Learn Section */
+
+.learn-section {
+    /* background-color: #f9f9f9; */
+    padding: 30px;
+    border-radius: 8px;
+    margin-top: 30px;
+    margin-left: 30px;
+}
+
+.learn-section h2 {
+    font-size: 28px;
+    margin-bottom: 5px;
+}
+
+.learn-section hr {
+    color: #555;
+    margin-bottom: 20px;
+}
+
+.learn-section ul {
+    list-style: none;
+    padding: 0;
+}
+
+.learn-section li {
+    margin: 15px 0;
+    font-size: 25px;
+    color: #555;
+}
+
+.learn-section li:hover {
+    cursor: pointer;
+}
+
+.learn-section li i {
+    color: #5573af;
+    margin-right: 5px;
+}
+
+.learn-section li {
+    display: flex;
+    align-items: center;
+}
+
+.learn-section li i {
+    flex-shrink: 0;
+    margin-right: 10px;
+}
+
+
+/* Enroll Section */
+
+.enroll-section {
+    background-color: #f9f9f9;
+    padding: 30px;
+    border-radius: 8px;
+    text-align: center;
+    margin-top: 30px;
+    height: 700px;
+}
+
+.enroll-section h2 {
+    font-size: 30px;
+    margin-bottom: 15px;
+    margin-top: 20px;
+}
+
+.enroll-section .btn {
+    width: 45%;
+    padding: 20px 20px;
+    border-radius: 5px;
+    border: 0;
+    cursor: pointer;
+    font-size: 18px;
+    text-transform: capitalize;
+    margin: 10px;
+    background-color: #5573af;
+    color: white;
+    margin-top: 35px;
+    display: inline;
+}
+
+.enroll-section p {
+    font-size: 25px;
+    color: #555;
+    margin-bottom: 25px;
+    margin-top: 20px;
+}
+
+.item-courses {
+    width: 50%;
+    float: left;
+    text-align: center;
+    font-size: 25px;
+    color: #555;
+    margin-bottom: 25px;
+    margin-top: 20px;
+}
+
+.item-courses h3 {
+    font-size: 30px;
+    margin-bottom: 10px;
+    color: black;
+}
+
+.item-courses ul {
+    list-style: none;
+    padding: 0;
+}
+
+.item-courses li {
+    margin-bottom: 10px;
+}
+
+.item-courses .fa-check {
+    color: #5573af;
+    margin-right: 5px;
+}
+
+.item-courses .fa-times {
+    color: #0c1529;
+    margin-right: 5px;
+}
+
+.login {
+    height: 100vh;
+    width: 100%;
+    /* top: 50%; */
+    position: relative;
+    background-color: #e8e8e8;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+.login-input {
+    margin: 15px 0;
+    width: 50%;
+    height: 50px;
+    /* left: 25%; */
+    border-radius: 40px;
+    border: 2px solid #5573af;
+    padding: 12px 20px;
+    box-sizing: border-box;
+    background-color: transparent;
+    font-size: 1.2em;
+    box-shadow: 1px 1px 10px #304161;
+    outline: none;
+    color: #5573af;
+}
+
+::placeholder {
+    color: #5573af;
+    opacity: 0.6;
+    text-transform: capitalize;
+}
+
+.bord:focus {
+    /* border: 2px red solid; */
+    /* background-color: #C0C0C0; */
+    /* border-radius: px; */
+    color: #5573af;
+}
+
+h1,
+.h1-login {
+    /* position: absolute; */
+    top: 20%;
+    left: auto;
+    text-align: center;
+    font-family: Georgia, "Times New Roman", Times, serif;
+    color: #5573af;
+    font-size: 3.5rem;
+    /* box-shadow: 1px 1px 10px #304161; */
+    letter-spacing: 2px;
+}
+
+.h1-login {
+    position: absolute;
+}
+
+.form-f {
+    position: absolute;
+    width: 50%;
+    top: 32%;
+    left: 38%;
+}
+
+.send {
+    min-width: 160px;
+    padding: 15px 0;
+    border-radius: 40px;
+    /* border: 2px solid #5573af; */
+    cursor: pointer;
+    font-size: 18px;
+    text-transform: capitalize;
+    margin: 10px 0;
+    background: linear-gradient(45deg, #5573af, #304161);
+    color: #fff;
+    /* transition: background-color  0.5ms; */
+}
+
+.send:hover {
+    opacity: 0.8;
+    color: white;
+    cursor: pointer;
+}
+
+
+/* define error class here ... */
+
+.error {
+    font-size: 13px;
+    color: #5573af;
+    opacity: 0.8;
+}
+
+.about-img-item {
+    max-width: 100%;
+    height: 150px;
+    border-radius: 5px;
+    margin-bottom: 15px;
+}
+
+
+/* alert */
+
+.alert {
+    text-align: center;
+    width: 50%;
+    padding: 15px;
+    /* padding-right: 30px; */
+    margin-top: 5px;
+    margin-left: 1%;
+    border: 1px solid transparent;
+    border-radius: 6px;
+}
+
+.alert-danger {
+    background-color: #f2dede;
+    border-color: #ebccd1;
+    color: #a94442;
 }

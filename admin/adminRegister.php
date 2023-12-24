@@ -1,6 +1,9 @@
 <?php include_once("adminComp/header.php"); ?>
 <?php
-
+if ($_SESSION['role'] != 0 or !isset($_SESSION['adminId'])) {
+    header("location:adminHome.php");
+    exit();
+}
 $error = "";
 $err_username = "";
 $err_pass =  "";
@@ -24,12 +27,11 @@ if (isset($_POST['submit'])) {
         if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
             $err_email =  "Email is not a valid";
         }
-        if (!$upper or !$upper or !$lower or !$specialCharacters) {
-            if ($length < 8)
-                $err_pass =  "Password must be more than 8 letters ";
-            else
-                $err_pass = 'Write The Password correctly';
-        }
+        if (!$upper or !$lower or !$specialCharacters) {
+
+            $err_pass = 'Write The Password correctly';
+        } else if ($length < 8)
+            $err_pass =  "Password must be more than 8 letters ";
         if ($password != $confirmPassword) {
             $error_pass = "Password doesn't match";
         }
@@ -47,7 +49,10 @@ if (isset($_POST['submit'])) {
                         ":password" => password_hash($password, PASSWORD_DEFAULT)
                     ]
                 );
-                $_SESSION['username'] = $username;
+                $admin_id = $conn->lastInsertId();
+                $_SESSION['adminRole'] = $data['role'];
+                $_SESSION['adminId'] = $admin_id;
+                $_SESSION['adminUserName'] = $username;
                 header('location:adminHome.php');
                 exit();
             }
@@ -63,51 +68,6 @@ if (isset($_POST['submit'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="admin.css">
     <title>Admin Page</title>
-    <style>
-        .login-input {
-            display: block;
-            margin-top: 15px;
-            width: 90%;
-            height: 50px;
-        }
-
-        .bord:focus {
-            border-radius: 3px;
-            color: gray;
-        }
-
-        .heading1 {
-            text-align: center;
-        }
-
-        .form-f {
-            width: 100%;
-        }
-
-        .send {
-            background-color: gray;
-            border: none;
-            border-radius: 3px;
-            /* transition: background-color  0.5ms; */
-        }
-
-        .send:hover {
-            background-color: #C0C0C0;
-            color: white;
-            cursor: pointer;
-        }
-        .card {
-            width: 20%;
-            height: 20%;
-            background-color: #C0C0C0;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            margin-left: 34vw;
-            margin-top: 18vh;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        }
-        /* define error class here ... */
-    </style>
 </head>
 
 <body>
@@ -116,14 +76,22 @@ if (isset($_POST['submit'])) {
         <form action="adminRegister.php" method="post" class="form-f">
             <!-- <label for="username">UserName</label> -->
             <input class="login-input bord" name="username" type="text" placeholder="Enter a username">
-            <div class="error"> <?php echo $err_username; ?></div>
+            <?php if (!empty($err_username)) : ?>
+                <div class="alert alert-danger"> <?php echo $err_username; ?></div>
+            <?php endif; ?>
             <input class="login-input bord" name="email" type="email" placeholder="Enter a email">
-            <div class="error"> <?php echo $err_email; ?></div>
+            <?php if (!empty($err_email)) : ?>
+                <div class="alert alert-danger"> <?php echo $err_email; ?></div>
+            <?php endif; ?>
             <input class="login-input bord" name="password" type="password" placeholder="Enter a password">
             <input class="login-input bord" name="confirmPassword" type="password" placeholder="Enter Confirmation password">
-            <div class="error"> <?php echo $err_pass; ?></div>
+            <?php if(!empty($err_pass)): ?>
+            <div class="alert alert-danger"> <?php echo $err_pass; ?></div>
+            <?php endif ;?>
             <input class="login-input send" name="submit" type="submit" value="Register">
-            <div class="error"> <?php echo $error; ?></div>
+            <?php if(!empty($error)): ?>
+            <div class="alert alert-danger"> <?php echo $error; ?></div>
+            <?php endif ;?>
         </form>
     </div>
     <?php include_once("adminComp/footer.php"); ?>

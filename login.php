@@ -4,11 +4,11 @@
 $error = "";
 if (isset($_SESSION["username"])) {
     header("location:homepage.php");
-    exit() ; 
+    exit();
 }
 if (isset($_POST["submit"])) {
     if (empty($_POST["email"]) or empty($_POST["password"])) {
-        $error =  "Some Inputs Are Empty";
+        $error =  "Please Fill All The Inputs";
     } else {
         $email = $_POST["email"];
         $user_password = $_POST["password"];
@@ -18,11 +18,12 @@ if (isset($_POST["submit"])) {
         if ($login->rowCount() > 0) {
             if (password_verify($user_password, $data["user_password"])) {
                 $_SESSION['email'] = $data['email'];
-                $email = $_SESSION['email'] ;
+                $email = $_SESSION['email'];
                 $selection = $conn->query("select * from users where email =  '$email'");
-                $selection->execute(); 
+                $selection->execute();
                 $data = $selection->fetch(PDO::FETCH_ASSOC);
-                $_SESSION['username'] = $data['username'] ; 
+                $_SESSION['user_id'] = $data['id'];
+                $_SESSION['username'] = $data['username'];
                 header('location:homepage.php');
                 exit();
             } else {
@@ -35,74 +36,20 @@ if (isset($_POST["submit"])) {
 }
 ?>
 
-<head>
-    <style>
-        .login {
-            height: 100vh;
-            width: 100%;
-            /* top: 50%; */
-            position: relative;
-            background-color: aliceblue;
-        }
-
-        .login-input {
-
-            display: block;
-            margin-top: 15px;
-            width: 50%;
-            height: 50px;
-            left: 25%;
-        }
-
-        .bord:focus {
-            /* border: 2px red solid; */
-            /* background-color: #C0C0C0; */
-            border-radius: 3px;
-            color: gray;
-        }
-
-        h1 {
-            position: absolute;
-            top: 20%;
-            left: 48%;
-            text-align: center;
-        }
-
-        .form-f {
-            position: absolute;
-            width: 50%;
-            top: 32%;
-            left: 38%;
-
-        }
-
-        .send {
-            background-color: gray;
-            border: none;
-            border-radius: 3px;
-            /* transition: background-color  0.5ms; */
-        }
-
-        .send:hover {
-            background-color: #C0C0C0;
-            color: white;
-            cursor: pointer;
-        }
-    </style>
-</head>
-
 <body>
     <div class="login container">
-        <h1 style="text-align: center; ">Login</h1>
+        <h1 style="text-align: center;" class="h1-login">Login</h1>
         <form action="<?php htmlspecialchars($_SERVER["PHP_SELF"]) ?>" method="post" class="form-f">
             <!-- <label for="username">UserName</label> -->
-            <input id="username" class="login-input bord" name="email" type="text" placeholder="Enter your email">
+            <input id="username" class="login-input bord" name="email" type="text" placeholder="Email">
             <!-- <label for="password">UserName</label> -->
             <!-- <input id="password" class="login-input bord" name="password" type="password" placeholder="Enter a password"> -->
             <!-- <input id="username" class="login-input bord" name="password" type="text" placeholder="Enter a username"> -->
-            <input id="password" class="login-input bord" name="password" type="password" placeholder="Enter a password">
+            <input id="password" class="login-input bord" name="password" type="password" placeholder="Password">
             <input class="login-input send" type="submit" value="LOGIN" name="submit">
-            <?php echo $error; ?>
+            <?php if (!empty($error)) : ?>
+                <div class="alert alert-danger"> <?php echo $error; ?></div>
+            <?php endif; ?>
         </form>
     </div>
 </body>
